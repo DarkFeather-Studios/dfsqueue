@@ -375,9 +375,6 @@ AddEventHandler("playerConnecting", function (name, setKickReason, deferrals)
         PlayerDataTable.Perms = 0
         PlayerDataTable.RoleName = "Player"
     else
-        PlayerDataTable.Perms = 999
-        PlayerDataTable.Prio = 1000000000
-        PlayerDataTable.RoleName = "Executive"
         print("Rejected - Not Whitelisted")
         deferrals.presentCard(AdaptiveCardCreateAccountData, function()
             setKickReason   ("Please relaunch and try again.")
