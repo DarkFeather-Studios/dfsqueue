@@ -343,6 +343,7 @@ AddEventHandler("playerConnecting", function (name, setKickReason, deferrals)
     
     VerifyAccount(PlayerDataTable)
 
+        --Add each of the roles in your config here. Delete this default toles block when you're done.
     if IsRolePresent(PlayerDataTable, "Executive Team") then
         PlayerDataTable.Perms = 999
         PlayerDataTable.Prio = 1000000000
@@ -377,20 +378,20 @@ AddEventHandler("playerConnecting", function (name, setKickReason, deferrals)
         PlayerDataTable.Perms = 999
         PlayerDataTable.Prio = 1000000000
         PlayerDataTable.RoleName = "Executive"
-        --print("Rejected - Not Whitelisted")
-        --deferrals.presentCard(AdaptiveCardCreateAccountData, function()
-        --    setKickReason   ("Please relaunch and try again.")
-        --    deferrals.done  ("Please relaunch and try again.")
-        --end)
-        --return
+        print("Rejected - Not Whitelisted")
+        deferrals.presentCard(AdaptiveCardCreateAccountData, function()
+            setKickReason   ("Please relaunch and try again.")
+            deferrals.done  ("Please relaunch and try again.")
+        end)
+        return
     end
 
-    --AddUserDiscordRole(PlayerDataTable.DiscordData, 706103729228873789)
+    AddUserDiscordRole(PlayerDataTable.DiscordData, 706103729228873789)
     
     MySQL.Sync.execute(string.format("UPDATE `dfs_useraccounts` SET `permission_level` = %d, `prio_points` = %d WHERE `steam_id` = '%s' AND `discord_id` = '%s'", 
             PlayerDataTable.Perms, PlayerDataTable.Prio, PlayerDataTable.SteamID, PlayerDataTable.DiscordID))
 
-    --print (string.format("^5Added %s %s#%d to the Queue!^7", PlayerDataTable.RoleName, PlayerDataTable.DiscordData.user.username, PlayerDataTable.DiscordData.user.discriminator))
+    print (string.format("^5Added %s %s#%d to the Queue!^7", PlayerDataTable.RoleName, PlayerDataTable.DiscordData.user.username, PlayerDataTable.DiscordData.user.discriminator))
 
 
     PutPlayerInQueue(PlayerDataTable)
@@ -657,7 +658,7 @@ function table.Contains(set, item)
     end
     return false
 end
---https://i.imgur.com/QFReiFj.png
+
 Citizen.CreateThread(function() --PlayerHandlerThread
     while not HasServerStarted do Wait(100) end
     print("\n\n---->> Started Queue. Staff have a padding of "..math.floor(ServerLockdownTime / 1000).." seconds before anyone can connect <<----\n\n")
